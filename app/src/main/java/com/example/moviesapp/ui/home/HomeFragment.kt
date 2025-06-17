@@ -10,10 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.moviesapp.databinding.FragmentHomeBinding
+import com.example.moviesapp.ui.search.SearchFragmentDirections
 import com.example.moviesapp.utils.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -52,11 +54,19 @@ class HomeFragment : Fragment() {
         observeUiStates()
 
     }
+
     private fun setupRecyclerViews() {
-        nowPlayingAdapter = MovieAdapter(isCarousel = true)
-        latestMoviesAdapter = MovieAdapter()
+        nowPlayingAdapter = MovieAdapter({ movie ->
+            val action = SearchFragmentDirections.actionSearchToDetail(movie.id)
+            findNavController().navigate(action)
+        }, isCarousel = true)
+        latestMoviesAdapter = MovieAdapter({ movie ->
+            val action = SearchFragmentDirections.actionSearchToDetail(movie.id)
+            findNavController().navigate(action)
+        })
         binding.rvNowPlaying.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = nowPlayingAdapter
             setPadding(48, 0, 48, 0)
             clipToPadding = false
@@ -87,12 +97,15 @@ class HomeFragment : Fragment() {
                                             binding.rvNowPlaying.isVisible = false
                                             binding.nowPlayingEmptyText.isVisible = false
                                         }
+
                                         is UiState.Success -> {
                                             binding.nowPlayingProgress.isVisible = false
                                             binding.rvNowPlaying.isVisible = state.data.isNotEmpty()
-                                            binding.nowPlayingEmptyText.isVisible = state.data.isEmpty()
+                                            binding.nowPlayingEmptyText.isVisible =
+                                                state.data.isEmpty()
                                             nowPlayingAdapter.submitList(state.data)
                                         }
+
                                         is UiState.Error -> {
                                             binding.nowPlayingProgress.isVisible = false
                                             binding.rvNowPlaying.isVisible = false
@@ -110,12 +123,15 @@ class HomeFragment : Fragment() {
                                             binding.rvLatestMovies.isVisible = false
                                             binding.latestEmptyText.isVisible = false
                                         }
+
                                         is UiState.Success -> {
                                             binding.latestProgress.isVisible = false
-                                            binding.rvLatestMovies.isVisible = state.data.isNotEmpty()
+                                            binding.rvLatestMovies.isVisible =
+                                                state.data.isNotEmpty()
                                             binding.latestEmptyText.isVisible = state.data.isEmpty()
                                             latestMoviesAdapter.submitList(state.data)
                                         }
+
                                         is UiState.Error -> {
                                             binding.latestProgress.isVisible = false
                                             binding.rvLatestMovies.isVisible = false

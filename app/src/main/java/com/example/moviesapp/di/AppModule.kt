@@ -1,17 +1,20 @@
 package com.example.moviesapp.di
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import com.example.moviesapp.data.local.AppDatabase
 import com.example.moviesapp.data.local.MovieDao
 import com.example.moviesapp.data.remote.TMDBApiService
 import com.example.moviesapp.data.repository.MovieRepositoryImpl
 import com.example.moviesapp.domain.repository.MovieRepository
+import com.example.moviesapp.utils.Constants.BASE_URL
+import com.example.moviesapp.utils.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -25,8 +28,26 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideTMDBApi(): TMDBApiService = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/3/")
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY // Use BODY for full logs
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideTMDBApi(okHttpClient: OkHttpClient): TMDBApiService = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(TMDBApiService::class.java)
@@ -34,7 +55,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDatabase(context: Application): AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "movie_db").build()
+        Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
 
     @Provides
     @Singleton

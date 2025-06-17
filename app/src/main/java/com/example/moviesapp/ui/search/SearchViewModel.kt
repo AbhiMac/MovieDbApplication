@@ -6,8 +6,17 @@ import com.example.moviesapp.domain.model.Movie
 import com.example.moviesapp.domain.usecase.SearchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -18,12 +27,27 @@ class SearchViewModel @Inject constructor(
     private val searchMoviesUseCase: SearchMoviesUseCase
 ) : ViewModel() {
 
-    private val _movies = MutableStateFlow<List<Movie>>(emptyList())
-    val movies: StateFlow<List<Movie>> = _movies
+    private val _query = MutableStateFlow("")
+    val query: StateFlow<String> = _query
+
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val movies: StateFlow<List<Movie>> = _query
+        .debounce(500) // 400ms delay to prevent rapid calls
+        .filter { it.isNotBlank() }
+        .flatMapLatest { query ->
+            flow {
+                val result = searchMoviesUseCase(query)
+                emit(result)
+            }.catch {
+                emit(emptyList()) // handle errors
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
 
     fun search(query: String) {
         viewModelScope.launch {
-            _movies.value = searchMoviesUseCase(query)
+            _query.value = query
         }
     }
 

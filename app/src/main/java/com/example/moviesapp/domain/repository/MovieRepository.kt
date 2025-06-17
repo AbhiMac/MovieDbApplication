@@ -8,8 +8,10 @@ import kotlinx.coroutines.flow.Flow
  */
 interface MovieRepository {
 
+    suspend fun getNowPlayingMovies(): List<Movie>
     suspend fun getPopularMovies(): List<Movie>
     suspend fun searchMovies(query: String): List<Movie>
+    suspend fun getMovieDetails(id:Int): Movie
     suspend fun bookmarkMovie(movie: Movie)
     suspend fun removeBookmark(id: Int)
     fun getBookmarks(): Flow<List<Movie>>

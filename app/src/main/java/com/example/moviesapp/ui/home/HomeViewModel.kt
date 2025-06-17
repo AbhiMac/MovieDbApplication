@@ -37,10 +37,10 @@ class HomeViewModel @Inject constructor(
             launch {
                 _nowPlayingState.value = UiState.Loading
                 try {
-                    delay(500) // simulate loading
-                    _nowPlayingState.value = UiState.Success(getStaticNowPlaying())
-//                    val movies = getNowPlayingMoviesUseCase()
-//                    _nowPlayingState.value = UiState.Success(movies)
+//                    delay(500) // simulate loading
+//                    _nowPlayingState.value = UiState.Success(getStaticNowPlaying())
+                    val movies = getNowPlayingMoviesUseCase()
+                    _nowPlayingState.value = UiState.Success(movies)
                 } catch (e: Exception) {
                     _nowPlayingState.value = UiState.Error(e.message ?: "Failed to load Now Playing")
                 }

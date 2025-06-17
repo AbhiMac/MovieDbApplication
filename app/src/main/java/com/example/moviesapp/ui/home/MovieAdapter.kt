@@ -11,12 +11,14 @@ import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.databinding.ItemMovieBinding
 import com.example.moviesapp.domain.model.Movie
+import com.example.moviesapp.utils.Constants.IMAGE_BASE_URL
+
 /**
  * Created by Abhijeet Sharma on 6/16/2025
  */
 
 class MovieAdapter(
-    private val onRemoveClick: ((Movie) -> Unit)? = null,
+    private val onMovieClick: ((Movie) -> Unit)? = null,
    private val isCarousel: Boolean= false
 ) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback()) {
 
@@ -27,15 +29,14 @@ class MovieAdapter(
             binding.titleText.text = movie.title
 
             Glide.with(binding.posterImage.context)
-                .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+                .load("$IMAGE_BASE_URL${movie.posterPath}")
                 .placeholder(R.drawable.placeholder)
                 .into(binding.posterImage)
 
             // Show remove button only if callback is provided
-            binding.removeButton.isVisible = onRemoveClick != null
 
-            binding.removeButton.setOnClickListener {
-                onRemoveClick?.invoke(movie)
+            binding.root.setOnClickListener {
+                onMovieClick?.invoke(movie)
             }
 
             // Optional: Add long click to share
