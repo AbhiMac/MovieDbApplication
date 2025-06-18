@@ -2,6 +2,7 @@ package com.example.moviesapp.ui.home
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -26,31 +27,30 @@ class MovieAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: Movie) {
-            binding.titleText.text = movie.title
+            if(isCarousel){
+                val layoutParams = binding.cardView.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.setMargins(15, 0, 15, 0) // left, top, right, bottom in pixels
+                binding.cardView.layoutParams = layoutParams
+                binding.titleOnImage.visibility = View.VISIBLE
+                binding.titleBelowImage.visibility = View.GONE
+                binding.titleOnImage.text = movie.title
+            }else{
+                binding.titleOnImage.visibility = View.GONE
+                binding.titleBelowImage.visibility = View.VISIBLE
+                binding.titleBelowImage.text = movie.title
+                binding.titleBelowImage.textSize = 12f
+            }
 
             Glide.with(binding.posterImage.context)
                 .load("$IMAGE_BASE_URL${movie.posterPath}")
+                .centerCrop()
                 .placeholder(R.drawable.placeholder)
                 .into(binding.posterImage)
-
-            // Show remove button only if callback is provided
 
             binding.root.setOnClickListener {
                 onMovieClick?.invoke(movie)
             }
 
-            // Optional: Add long click to share
-            binding.root.setOnLongClickListener {
-                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_SUBJECT, "Check this out: ${movie.title}")
-                    putExtra(Intent.EXTRA_TEXT, movie.overview)
-                }
-                binding.root.context.startActivity(
-                    Intent.createChooser(shareIntent, "Share via")
-                )
-                true
-            }
 
             if (isCarousel) {
                 binding.root.scaleX = 1.05f

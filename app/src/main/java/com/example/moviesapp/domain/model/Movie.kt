@@ -6,4 +6,5 @@ package com.example.moviesapp.domain.model
 data class Movie(val id: Int,
                  val title: String,
                  val posterPath: String,
-                 val overview: String)
+                 val overview: String, val isNowPlaying: Boolean=false,
+                 val isPopular: Boolean=false,)

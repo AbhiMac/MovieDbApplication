@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.play.services)
 }
 
 android {
@@ -54,6 +55,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.firebase.dynamic.links)
 
     //Retrofit
     implementation(libs.retrofit)

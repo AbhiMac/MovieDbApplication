@@ -4,4 +4,13 @@
     <string name="title_bookmarks">Bookmarks</string>
     <string name="title_search">Search</string>
     <string name="search_movies">Search movies...</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="no_data_found">No data found</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="title">Title</string>
+    <string name="share">Share</string>
+    <string name="overview">Overview</string>
+    <string name="no_bookmarks_found">No bookmarks found</string>
 </resources>

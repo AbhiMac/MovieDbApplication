@@ -3,6 +3,7 @@ package com.example.moviesapp.di
 import android.app.Application
 import androidx.room.Room
 import com.example.moviesapp.data.local.AppDatabase
+import com.example.moviesapp.data.local.BookmarkDao
 import com.example.moviesapp.data.local.MovieDao
 import com.example.moviesapp.data.remote.TMDBApiService
 import com.example.moviesapp.data.repository.MovieRepositoryImpl

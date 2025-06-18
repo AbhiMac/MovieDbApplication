@@ -37,8 +37,6 @@ class HomeViewModel @Inject constructor(
             launch {
                 _nowPlayingState.value = UiState.Loading
                 try {
-//                    delay(500) // simulate loading
-//                    _nowPlayingState.value = UiState.Success(getStaticNowPlaying())
                     val movies = getNowPlayingMoviesUseCase()
                     _nowPlayingState.value = UiState.Success(movies)
                 } catch (e: Exception) {
@@ -57,14 +55,6 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-    private fun getStaticNowPlaying(): List<Movie> {
-        return listOf(
-            Movie(id = 1, title = "Inception", posterPath = "/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg", overview = "Mind-bending thriller."),
-            Movie(id = 2, title = "Interstellar", posterPath = "/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", overview = "Beyond time and space."),
-            Movie(id = 3, title = "The Dark Knight", posterPath = "/qJ2tW6WMUDux911r6m7haRef0WH.jpg", overview = "The legend of Gotham."),
-            Movie(id = 4, title = "Avatar", posterPath = "/6EiRUJpuoeQPghrs3YNktfnqOVh.jpg", overview = "Epic alien world."),
-            Movie(id = 5, title = "Avengers: Endgame", posterPath = "/or06FN3Dka5tukK1e9sl16pB3iy.jpg", overview = "End of an era.")
-        )
-    }
+
 
 }

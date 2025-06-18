@@ -13,9 +13,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -28,18 +29,20 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _query = MutableStateFlow("")
-    val query: StateFlow<String> = _query
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val movies: StateFlow<List<Movie>> = _query
-        .debounce(500) // 400ms delay to prevent rapid calls
-        .filter { it.isNotBlank() }
+        .debounce(500)
+        .distinctUntilChanged()
         .flatMapLatest { query ->
-            flow {
-                val result = searchMoviesUseCase(query)
-                emit(result)
-            }.catch {
-                emit(emptyList()) // handle errors
+            if (query.isBlank()) {
+                flowOf(emptyList())
+            } else {
+                flow {
+                    emit(searchMoviesUseCase(query))
+                }.catch {
+                    emit(emptyList())
+                }
             }
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())

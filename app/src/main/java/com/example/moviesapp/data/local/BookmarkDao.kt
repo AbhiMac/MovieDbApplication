@@ -10,20 +10,17 @@ import kotlinx.coroutines.flow.Flow
  * Created by Abhijeet Sharma on 6/16/2025
  */
 @Dao
-interface MovieDao {
+interface BookmarkDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(movies: List<MovieEntity>)
-
-    @Query("DELETE FROM movies")
+    @Query("DELETE FROM bookmark")
     suspend fun clearAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(movie: MovieEntity)
+    suspend fun insert(movie: BookmarkEntity)
 
-    @Query("DELETE FROM movies WHERE id = :id")
+    @Query("DELETE FROM bookmark WHERE id = :id")
     suspend fun deleteById(id: Int)
 
     @Query("SELECT * FROM movies")
-     fun getAll(): Flow<List<MovieEntity>>
+    fun getAll(): Flow<List<BookmarkEntity>>
 }

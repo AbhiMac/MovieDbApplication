@@ -4,8 +4,7 @@
     android:id="@+id/detailRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:padding="16dp">
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentLayout"
@@ -15,7 +14,8 @@
         <ImageView
             android:id="@+id/ivPoster"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
+            android:contentDescription="@string/movie_poster"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,21 +25,22 @@
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:text="@string/title"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="18sp"
+            android:padding="@dimen/dim_10"
             android:textColor="@android:color/white"
             app:layout_constraintTop_toBottomOf="@id/ivPoster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonRow"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="@dimen/dim_10"/>
 
         <LinearLayout
             android:id="@+id/buttonRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             app:layout_constraintTop_toTopOf="@id/tvTitle"
             app:layout_constraintBottom_toBottomOf="@id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent">
@@ -48,18 +49,17 @@
                 android:id="@+id/btnBookmark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_collections_bookmark_24"
-                android:contentDescription="Bookmark"
+                android:src="@drawable/ic_bookmark_border"
+                android:contentDescription="@string/bookmark"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginEnd="16dp"
-                app:tint="@android:color/white" />
+                android:layout_marginEnd="16dp" />
 
             <ImageButton
                 android:id="@+id/btnShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_share"
-                android:contentDescription="Share"
+                android:src="@drawable/ic_share_24dp"
+                android:contentDescription="@string/share"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:tint="@android:color/white" />
         </LinearLayout>
@@ -69,12 +69,13 @@
             android:id="@+id/tvOverview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Overview goes here"
+            android:text="@string/overview"
             android:textColor="@android:color/white"
+            android:paddingHorizontal="@dimen/dim_10"
+            android:paddingBottom="@dimen/dim_10"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -13,11 +13,14 @@ data class MovieDto(
     @SerializedName("overview") val overview: String
 )
 
-fun MovieDto.toDomain(): Movie {
+fun MovieDto.toDomain(isNowPlaying: Boolean = false,
+                      isPopular: Boolean = false): Movie {
     return Movie(
         id = id,
         title = title,
         posterPath = posterPath ?: "",
-        overview = overview
+        overview = overview,
+        isNowPlaying = isNowPlaying,
+        isPopular = isPopular
     )
 }

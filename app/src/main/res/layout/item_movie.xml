@@ -1,37 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
+    android:id="@+id/cardView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="12dp"
+    android:backgroundTint="@android:color/transparent"
+    app:cardCornerRadius="15dp"
     app:cardElevation="6dp"
-    android:layout_margin="6dp"
-    android:backgroundTint="@android:color/transparent">
+    app:cardPreventCornerOverlap="true">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp">
+        android:padding="3dp">
 
         <ImageView
             android:id="@+id/posterImage"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:contentDescription="Movie Poster" />
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_poster"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- For carousel view: course title on bottom of image -->
         <TextView
-            android:id="@+id/titleText"
-            android:layout_width="match_parent"
+            android:id="@+id/titleOnImage"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:background="#99000000"
             android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="CS101"
+            android:padding="6dp"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/posterImage"
+            app:layout_constraintEnd_toEndOf="@id/posterImage"
+            app:layout_constraintStart_toStartOf="@id/posterImage" />
+
+        <!-- For grid view: course title below image -->
+        <TextView
+            android:id="@+id/titleBelowImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="CS101"
+            android:textSize="14sp"
             android:paddingTop="8dp"
             android:maxLines="2"
-            android:ellipsize="end" />
+            android:ellipsize="end"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/posterImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

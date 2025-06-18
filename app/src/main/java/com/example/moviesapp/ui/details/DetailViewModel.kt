@@ -1,15 +1,25 @@
 package com.example.moviesapp.ui.details
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.domain.model.Movie
 import com.example.moviesapp.domain.usecase.GetMovieDetailsUseCase
 import com.example.moviesapp.utils.UiState
+import com.google.firebase.dynamiclinks.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.shortLinkAsync
+import com.google.firebase.dynamiclinks.socialMetaTagParameters
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 
 /**
@@ -34,4 +44,7 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
+
+
+
 }
